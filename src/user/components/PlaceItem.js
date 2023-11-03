@@ -6,8 +6,22 @@ import "./PlaceItem.css";
 
 const PlaceItem = (props) => {
   const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
   const openMapHandler = () => setShowModal(true);
   const closeMapHandler = () => setShowModal(false);
+
+  const cancelDeleteModal = () => {
+    setShowDeleteModal(false);
+  }
+
+  const openDeleteModal = () => {
+    setShowDeleteModal(true)
+  }
+
+  const deletePlace = () => {
+    setShowDeleteModal(false);
+    console.log('Deleteing...');
+  }
   return (
     <React.Fragment>
       <Modal
@@ -21,6 +35,24 @@ const PlaceItem = (props) => {
         <div className="map-container">
           <h2>The Map !!!</h2>
         </div>
+      </Modal>
+      <Modal
+        show={showDeleteModal}
+        onCancel={cancelDeleteModal}
+        header="Are you sure?"
+        footerClass="place-item__modal-actionscontent"
+        footer={
+          <>
+            <Button inverse onClick={cancelDeleteModal}>
+              Cancel
+            </Button>
+            <Button danger onClick={deletePlace}>
+              Delete
+            </Button>
+          </>
+        }
+      >
+        <p>Are you sure you want to delete this Place?</p>
       </Modal>
       <li className="place-item">
         <Card className="place-item__content">
@@ -37,7 +69,9 @@ const PlaceItem = (props) => {
               View on map
             </Button>
             <Button to={`/places/${props.id}`}>Edit</Button>
-            <Button danger>Delete</Button>
+            <Button danger onClick={openDeleteModal}>
+              Delete
+            </Button>
           </div>
         </Card>
       </li>
