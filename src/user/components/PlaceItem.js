@@ -1,27 +1,30 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Button from "../../shared/components/FormElements/Button";
 import Modal from "../../shared/components/UIElements/Modal";
 import Card from "../../shared/components/UIElements/card/Card";
+import { AuthContext } from "../../shared/context/auth-context";
 import "./PlaceItem.css";
 
 const PlaceItem = (props) => {
   const [showModal, setShowModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const openMapHandler = () => setShowModal(true);
   const closeMapHandler = () => setShowModal(false);
 
   const cancelDeleteModal = () => {
     setShowDeleteModal(false);
-  }
+  };
 
   const openDeleteModal = () => {
-    setShowDeleteModal(true)
-  }
+    setShowDeleteModal(true);
+  };
 
   const deletePlace = () => {
     setShowDeleteModal(false);
-    console.log('Deleteing...');
-  }
+    console.log("Deleteing...");
+  };
+
+  const auth = useContext(AuthContext);
   return (
     <React.Fragment>
       <Modal
@@ -68,10 +71,12 @@ const PlaceItem = (props) => {
             <Button inverse onClick={openMapHandler}>
               View on map
             </Button>
-            <Button to={`/places/${props.id}`}>Edit</Button>
-            <Button danger onClick={openDeleteModal}>
-              Delete
-            </Button>
+            {auth.isLogin && <Button to={`/places/${props.id}`}>Edit</Button>}
+            {auth.isLogin && (
+              <Button danger onClick={openDeleteModal}>
+                Delete
+              </Button>
+            )}
           </div>
         </Card>
       </li>
